@@ -20,10 +20,10 @@ public:
 private:
 	Function *m_leftFunction = nullptr,
 		*m_rightFunction = nullptr;
-	Operator m_operato;
+	Operator m_operator = Operator::Add;
 	Polynom *m_polynom = nullptr;
 };
 
 // GLOBAL OPERATORS
 
-std::ostream& operator<<(std::ostream&, const Polynom&);
+std::ostream& operator<<(std::ostream&, const Function&);

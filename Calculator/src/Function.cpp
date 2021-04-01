@@ -43,7 +43,7 @@ double Function::calculate(double x) const {
 	}
 }
 
-//print Polynom
+//print Function
 std::ostream& operator<<(std::ostream& os, const Function& func) {
 	if (m_polynom) {
 		os << *(func.get_polynom());

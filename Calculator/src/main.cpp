@@ -7,7 +7,8 @@
 
 int main() {
 	std::vector<double> consts = { 3, -2, 5 };
-	Function func(Polynom(consts));
+	Polynom* poly = new Polynom(consts);
+	Function func(poly);
 	std::cout << func;
 	return EXIT_SUCCESS;
 }
