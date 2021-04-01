@@ -3,7 +3,7 @@
 #include "Polynom.h"
 
 unsigned int Polynom::get_degree() const {
-	return m_consts.size;
+	return m_consts.size();
 }
 
 double Polynom::get_const(unsigned int pos) const {

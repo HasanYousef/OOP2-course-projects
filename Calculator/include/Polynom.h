@@ -6,7 +6,7 @@
 
 class Polynom {
 public:
-	Polynom();
+	Polynom(const std::vector<double>& consts) : m_consts(consts) {};
 	unsigned int get_degree() const;
 	double get_const(unsigned int pos) const;
 	double calculate(double) const;
