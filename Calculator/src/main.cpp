@@ -16,10 +16,8 @@ int main() {
 
 void run() {
 	std::vector<Function*> functions;
-	Function* sinFun = new Function(0);
-	functions.push_back(sinFun);
-	sinFun = new Function(1);
-	functions.push_back(sinFun);
+	functions.push_back(new Function(0));
+	functions.push_back(new Function(1));
 	std::vector<bool> isDeleted({false, false});
 
 	std::string command, input;
@@ -29,7 +27,7 @@ void run() {
 		std::cout << "This is the function list: " << std::endl;
 		//print the functions
 		for (int func = 0; func < functions.size(); func++) {
-			if (isDeleted[func]) {
+			if (!isDeleted[func]) {
 				std::cout << functions[func] << std::endl;
 			}
 		}

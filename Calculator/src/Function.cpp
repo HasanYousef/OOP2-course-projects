@@ -2,6 +2,10 @@
 
 #include "Function.h"
 
+int Function::get_type() const {
+	return m_type;
+
+}
 Polynom* Function::get_polynom() const {
 	return m_polynom;
 }
@@ -52,19 +56,32 @@ double Function::calculate(double x) const {
 }
 
 //print Function
-std::ostream& operator<<(std::ostream& os, const Function& func) {
-	Polynom *poly = func.get_polynom();
+std::ostream& operator<<(std::ostream& os, Function* func) {
+	if (func == nullptr) {
+		os << "x";
+		return os;
+	}
+	Function* leftFunc = func->get_left_function(),
+		* rightFunc = func->get_right_function();
+	int funcType = func->get_type();
+	if (funcType == 0) {
+		os << "sin(" << leftFunc << ")";
+		return os;
+	}
+	if (funcType == 1) {
+		os << "ln(" << leftFunc << ")";
+		return os;
+	}
+	Polynom *poly = func->get_polynom();
 	if (poly) {
 		os << *(poly);
 	}
 	else {
-		Function *leftFunc = func.get_left_function(),
-			*rightFunc = func.get_right_function();
 		if (!rightFunc) {
-			return os << *(func.get_left_function());
+			return os << leftFunc;
 		}
-		os << "( " << *leftFunc;
-		switch (func.get_operator())
+		os << "( " << leftFunc;
+		switch (func->get_operator())
 		{
 		case Operator::Add:
 			os << " + ";
@@ -75,7 +92,7 @@ std::ostream& operator<<(std::ostream& os, const Function& func) {
 		case Operator::Divide:
 			os << " / ";
 		}
-		os << *rightFunc << " )";
+		os << rightFunc << " )";
 	}
 	return os;
 }
