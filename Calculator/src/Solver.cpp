@@ -1,40 +1,31 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-#include <vector>
-#include <string>
-#include "Function.h"
+#pragma
+#include "Solver.h"
 
-void run();
-void printHelp();
-Function* buildPoly(std::string polynom);
-
-int main() {
-	run();
-	return EXIT_SUCCESS;
+//----------------------------------------------
+Solver::Solver() {
+	Function* f = new Function(0);
+	m_functions.push_back(f);
+	f = new Function(1);
+	m_functions.push_back(f);
+	m_isDeleted.push_back(true);
+	m_isDeleted.push_back(true);
 }
 
-void run() {
-	std::vector<Function*> functions;
-	Function* sinFun = new Function(0);
-	functions.push_back(sinFun);
-	sinFun = new Function(1);
-	functions.push_back(sinFun);
-	std::vector<bool> isDeleted({false, false});
-
+//----------------------------------------------
+void Solver::run() {
 	std::string command, input;
 	Function* f;
 	while (true) {
 		f = NULL; //we rest the func adder
 		std::cout << "This is the function list: " << std::endl;
 		//print the functions
-		for (int func = 0; func < functions.size(); func++) {
-			if (isDeleted[func]) {
-				std::cout << functions[func] << std::endl;
+		for (int func = 0; func < m_functions.size(); func++) {
+			if (!m_isDeleted[func]) {
+				std::cout << m_functions[func] << std::endl;
 			}
 		}
 		std::cout << "Please enter a command (help for command list): ";
-		//read the input
+		//read the inpute
 		std::cin >> command;
 		//do the command
 		if (command == "eval") {
@@ -42,47 +33,33 @@ void run() {
 		}
 		else if (command == "poly") {
 			// function not work
-			f = buildPoly(input);
-			if (f) {
-				functions.push_back(f);
+			Polynom* p = poly();
+			if (p) {
+				m_functions.push_back(f);
+				m_isDeleted.push_back(false);
 			}
-			isDeleted.push_back(true);
+			p = NULL;
 		}
 		else if (command == "mul") {
-			getline(std::cin, input);
-			if (isdigit(input[1]) && isdigit(input[3])) {
-				f = new Function(functions[int(input[1] - '0')]
-					, Multiply, functions[int(input[3] - '0')]);
-				functions.push_back(f);
-			}
-			isDeleted.push_back(true);
+			createFunc(Operator::Multiply);
+			m_isDeleted.push_back(false);
 		}
 		else if (command == "add") {
-			getline(std::cin, input);
-			if (isdigit(input[1]) && isdigit(input[3])) {
-				f = new Function(functions[int(input[1] - '0')]
-					, Add, functions[int(input[3] - '0')]);
-				functions.push_back(f);
-			}
-			isDeleted.push_back(true);
+			createFunc(Operator::Add);
+			m_isDeleted.push_back(false);;
 		}
 		else if (command == "comp") {
-			getline(std::cin, input);
-			if (isdigit(input[1]) && isdigit(input[3])) {
-				f = new Function(functions[int(input[1] - '0')]
-					, Composite, functions[int(input[3] - '0')]);
-				functions.push_back(f);
-			}
-			isDeleted.push_back(true);
+			createFunc(Operator::Composite);
+			m_isDeleted.push_back(false);
 		}
 		else if (command == "log") {
 
 		}
 		else if (command == "del") {
 			//change to try catch
-			getline(std::cin, input);
+			std::getline(std::cin, input);
 			if (isdigit(input[1])) {
-				isDeleted[int(input[1] - '0')] = false;
+				m_isDeleted[int(input[1] - '0')] = false;
 			}
 		}
 		else if (command == "help") {
@@ -95,7 +72,21 @@ void run() {
 }
 
 //----------------------------------------------
-void printHelp() {
+void Solver::createFunc(Operator oper) {
+	std::string input;
+	std::getline(std::cin, input);
+	int num1, num2;
+	if (isdigit(input[1]) && isdigit(input[3])) {
+		num1 = int(input[1] - '0');
+		num2 = int(input[3] - '0');
+		Function* f = new Function(m_functions[num1], oper, m_functions[num2]);
+		m_functions.push_back(f);
+		m_isDeleted.push_back(false);
+	}
+}
+
+//----------------------------------------------
+void Solver::printHelp() {
 	std::cout << " Following is the list of the calculator's available commands:" << std::endl
 		<< "eval(uate) num x - Evaluates function #num on x" << std::endl <<
 		"poly(nomial) N c0 c1 ... cN - 1 - Creates a polynomial with N coefficients" << std::endl
@@ -110,7 +101,7 @@ void printHelp() {
 }
 
 //----------------------------------------------
-Function * buildPoly(std::string polynom) {
+Polynom* Solver::poly() {
 	std::vector<double> vec;
 	int degree, num;
 	std::cin >> degree;
@@ -120,6 +111,6 @@ Function * buildPoly(std::string polynom) {
 	if (vec.size() != degree) {
 		return NULL;
 	}
-	Polynom* poly = new Polynom(vec);
-	return (new Function(poly));
+	return (new Polynom(vec));
+	
 }

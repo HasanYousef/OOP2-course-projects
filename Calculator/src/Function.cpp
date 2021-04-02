@@ -22,6 +22,12 @@ double Function::calculate(double x) const {
 	if (m_polynom) {
 		return m_polynom->calculate(x);
 	}
+	else if (m_type == 0) {
+		return sin(x);
+	}
+	else if (m_type == 1) {
+		return log(x);
+	}
 	else {
 		double left = m_leftFunction->calculate(x);
 		if (m_rightFunction) {
@@ -36,6 +42,8 @@ double Function::calculate(double x) const {
 				return left * right;
 			case Operator::Divide:
 				return left / right;
+			case Operator::Composite:   //NEW CASE ADDED  ***
+				return m_leftFunction->calculate(right);
 			}
 		}
 		else
@@ -45,16 +53,17 @@ double Function::calculate(double x) const {
 
 //print Function
 std::ostream& operator<<(std::ostream& os, const Function& func) {
-	if (m_polynom) {
-		os << *(func.get_polynom());
+	Polynom *poly = func.get_polynom();
+	if (poly) {
+		os << *(poly);
 	}
 	else {
-		Polynom *leftFunc = func.get_left_function(),
+		Function *leftFunc = func.get_left_function(),
 			*rightFunc = func.get_right_function();
 		if (!rightFunc) {
 			return os << *(func.get_left_function());
 		}
-		os << "( " << leftFunc*;
+		os << "( " << *leftFunc;
 		switch (func.get_operator())
 		{
 		case Operator::Add:
@@ -66,7 +75,7 @@ std::ostream& operator<<(std::ostream& os, const Function& func) {
 		case Operator::Divide:
 			os << " / ";
 		}
-		os << rightFunc* << " )";
+		os << *rightFunc << " )";
 	}
 	return os;
 }
