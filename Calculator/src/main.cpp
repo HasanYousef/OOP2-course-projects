@@ -4,13 +4,15 @@
 #include <vector>
 #include <string>
 #include "Function.h"
+#include "Solver.h"
 
 void run();
 void printHelp();
 Function* buildPoly(std::string polynom);
 
 int main() {
-	run();
+	Solver slv = Solver();
+	slv.run();
 	return EXIT_SUCCESS;
 }
 

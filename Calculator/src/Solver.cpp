@@ -7,8 +7,7 @@ Solver::Solver() {
 	m_functions.push_back(f);
 	f = new Function(1);
 	m_functions.push_back(f);
-	m_isDeleted.push_back(true);
-	m_isDeleted.push_back(true);
+	m_isDeleted = { false, false };
 }
 
 //----------------------------------------------
