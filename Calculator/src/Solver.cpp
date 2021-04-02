@@ -48,7 +48,9 @@ void Solver::run() {
 			m_isDeleted.push_back(false);;
 		}
 		else if (command == "comp") {
-			createFunc(Operator::Composite);
+			int num;
+			std::cin >> num;
+
 			m_isDeleted.push_back(false);
 		}
 		else if (command == "log") {
@@ -73,15 +75,10 @@ void Solver::run() {
 //----------------------------------------------
 void Solver::createFunc(Operator oper) {
 	std::string input;
-	std::getline(std::cin, input);
 	int num1, num2;
-	if (isdigit(input[1]) && isdigit(input[3])) {
-		num1 = int(input[1] - '0');
-		num2 = int(input[3] - '0');
-		Function* f = new Function(m_functions[num1], oper, m_functions[num2]);
-		m_functions.push_back(f);
-		m_isDeleted.push_back(false);
-	}
+	std::cin >> num1 >> num2;
+	m_functions.push_back(new Function(m_functions[num1], oper, m_functions[num2]));
+	m_isDeleted.push_back(false);
 }
 
 //----------------------------------------------

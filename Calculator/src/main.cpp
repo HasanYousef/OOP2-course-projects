@@ -69,8 +69,7 @@ void run() {
 		else if (command == "comp") {
 			getline(std::cin, input);
 			if (isdigit(input[1]) && isdigit(input[3])) {
-				f = new Function(functions[int(input[1] - '0')]
-					, Composite, functions[int(input[3] - '0')]);
+				f = new Function(functions[int(input[1] - '0')]);
 				functions.push_back(f);
 			}
 			isDeleted.push_back(true);

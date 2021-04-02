@@ -40,14 +40,8 @@ double Function::calculate(double x) const {
 			{
 			case Operator::Add:
 				return left + right;
-			case Operator::Subtract:
-				return left - right;
 			case Operator::Multiply:
 				return left * right;
-			case Operator::Divide:
-				return left / right;
-			case Operator::Composite:   //NEW CASE ADDED  ***
-				return m_leftFunction->calculate(right);
 			}
 		}
 		else
@@ -85,12 +79,10 @@ std::ostream& operator<<(std::ostream& os, Function* func) {
 		{
 		case Operator::Add:
 			os << " + ";
-		case Operator::Subtract:
-			os << " - ";
+			break;
 		case Operator::Multiply:
+			break;
 			os << " * ";
-		case Operator::Divide:
-			os << " / ";
 		}
 		os << rightFunc << " )";
 	}

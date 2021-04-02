@@ -10,7 +10,7 @@ class Function {
 public:
 	Function(int type) : m_type(type) {};
 	Function(Polynom* poly) : m_polynom(poly) {};
-	Function(Function* lf, Operator op, Function* rf = nullptr)
+	Function(Function* lf, Operator op = Operator::Add, Function* rf = nullptr)
 		: m_leftFunction(lf), m_rightFunction(rf), m_operator(op) {};
 	int get_type() const;
 	Polynom* get_polynom() const;
