@@ -7,20 +7,22 @@ Solver::Solver() {
 	m_functions.push_back(f);
 	f = new Function(1);
 	m_functions.push_back(f);
-	m_isDeleted = { false, false };
 }
 
 //----------------------------------------------
 void Solver::run() {
 	std::string command, input;
 	Function* f;
+	int funNum, func;
 	while (true) {
 		f = NULL; //we rest the func adder
 		std::cout << "This is the function list: " << std::endl;
 		//print the functions
+		funNum = 0;
 		for (int func = 0; func < m_functions.size(); func++) {
-			if (!m_isDeleted[func]) {
-				std::cout << m_functions[func] << std::endl;
+			if (!m_functions[func]->isDeleted()) {
+				std::cout << funNum << ": " << m_functions[func] << std::endl;
+				funNum++;
 			}
 		}
 		std::cout << "Please enter a command (help for command list): ";
@@ -28,39 +30,42 @@ void Solver::run() {
 		std::cin >> command;
 		//do the command
 		if (command == "eval") {
-
+			int value;
+			func = findFunc();
+			std::cin >> value;
+			if (func != -1) {
+				std::cout << std::setprecision(2) << m_functions[func]->calculate(value) << std::endl;
+			}
 		}
 		else if (command == "poly") {
 			// function not work
-			Polynom* p = poly();
-			if (p) {
+			f = poly();
+			if (f) {
 				m_functions.push_back(f);
-				m_isDeleted.push_back(false);
 			}
-			p = NULL;
 		}
 		else if (command == "mul") {
 			createFunc(Operator::Multiply);
-			m_isDeleted.push_back(false);
 		}
 		else if (command == "add") {
 			createFunc(Operator::Add);
-			m_isDeleted.push_back(false);;
 		}
 		else if (command == "comp") {
-			int num;
-			std::cin >> num;
-
-			m_isDeleted.push_back(false);
+			
 		}
 		else if (command == "log") {
-
+			// log(num) / log(base) = log N num
+			int base;
+			func = findFunc();
+			if (func != -1) {
+				std::cin >> base;
+			}
+			// not finish
 		}
 		else if (command == "del") {
-			//change to try catch
-			std::getline(std::cin, input);
-			if (isdigit(input[1])) {
-				m_isDeleted[int(input[1] - '0')] = false;
+			func = findFunc();
+			if (func != -1) {
+				m_functions[func]->deleteIt();
 			}
 		}
 		else if (command == "help") {
@@ -68,36 +73,57 @@ void Solver::run() {
 		}
 		else if (command == "exit") {
 			std::cout << "Goodbye" << std::endl;
+			return;
+		}
+		else {
+			std::cout << "Wrong Input" << std::endl;
 		}
 	}
 }
 
 //----------------------------------------------
 void Solver::createFunc(Operator oper) {
-	std::string input;
-	int num1, num2;
+	int num1, num2, 
+		func1 = -1, 
+		func2 = -1,
+		deletedNum = -1;
 	std::cin >> num1 >> num2;
-	m_functions.push_back(new Function(m_functions[num1], oper, m_functions[num2]));
-	m_isDeleted.push_back(false);
+	//looking for the functions in the array
+	for (int i = 0; i < m_functions.size(); i++) {
+		if (!(m_functions[i]->isDeleted()))
+			deletedNum++;
+		if (num1 == deletedNum && func1 < 0)
+			func1 = i;
+		if (num2 == deletedNum && func2 < 0)
+			func2 = i;
+	}
+
+	if (func1 != -1 && func2 != -1) {
+		m_functions.push_back(new Function(m_functions[func1],
+			oper, m_functions[func2]));
+	}
+	else {
+		std::cout << "Wrong Input" << std::endl;
+	}
 }
 
 //----------------------------------------------
 void Solver::printHelp() {
-	std::cout << " Following is the list of the calculator's available commands:" << std::endl
-		<< "eval(uate) num x - Evaluates function #num on x" << std::endl <<
-		"poly(nomial) N c0 c1 ... cN - 1 - Creates a polynomial with N coefficients" << std::endl
-		<< "mul(tiply) num1 num2 - Creates a function that is the multiplication of" << std::endl
-		<< "function #num1 and function #num2" << std::endl <<
-		"add num1 num2 - Creates a function that is the sum of function #num1 and" << std::endl
-		<< "function #num2" << std::endl
-		<< "comp(osite) num1 num2 - Creates a function that is the composition of"
+	std::cout << " Following is the list of the calculator's available commands:" << 
+		std::endl << "eval(uate) num x - Evaluates function #num on x" << std::endl <<
+		"poly(nomial) N c0 c1 ... cN - 1 - Creates a polynomial with N coefficients" << 
+		std::endl << "mul(tiply) num1 num2 - Creates a function that is the multiplication of"
+		<<  std::endl << "function #num1 and function #num2" << std::endl <<
+		"add num1 num2 - Creates a function that is the sum of function #num1 and" <<
+		std::endl << "function #num2" << std::endl << 
+		"comp(osite) num1 num2 - Creates a function that is the composition of"
 		<< std::endl << "function #num1 and function #num2" << std::endl <<
 		"log N num - Creates a function that computes log N of function #num" << std::endl
 		<< "del(ete) num - Deletes function #num from function list " << std::endl;
 }
 
 //----------------------------------------------
-Polynom* Solver::poly() {
+Function* Solver::poly() {
 	std::vector<double> vec;
 	int degree, num;
 	std::cin >> degree;
@@ -107,6 +133,21 @@ Polynom* Solver::poly() {
 	if (vec.size() != degree) {
 		return NULL;
 	}
-	return (new Polynom(vec));
-	
+	Polynom* p = new Polynom(vec);
+	return new Function(p);
+}
+
+int Solver::findFunc() {
+	int funNum,
+		deletedNum = 0;
+	std::cin >> funNum;
+	for (int func = 0; func < m_functions.size(); func++) {
+		if (m_functions[func]->isDeleted()) {
+			deletedNum++;
+		}
+		if ((func - deletedNum) == funNum) {
+			return func;
+		}
+	}
+	return -1;
 }

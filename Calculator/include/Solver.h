@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <iomanip>
 #include "Function.h"
 
 class Solver
@@ -13,9 +14,9 @@ public:
 
 private:
 	void printHelp();
-	Polynom* poly();
+	Function* poly();
 	void createFunc(Operator);
+	int findFunc();
 
-	std::vector<Function*> m_functions;
-	std::vector<bool> m_isDeleted;	
+	std::vector<Function*> m_functions;	
 };

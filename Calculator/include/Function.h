@@ -17,7 +17,9 @@ public:
 	Operator get_operator() const;
 	Function* get_left_function() const;
 	Function* get_right_function() const;
-	virtual double calculate(double) const;
+	void deleteIt();
+	bool isDeleted() const;
+	double calculate(double) const;
 
 private:
 	Polynom* m_polynom = nullptr;
@@ -25,6 +27,7 @@ private:
 		*m_rightFunction = nullptr;
 	Operator m_operator = Operator::Add;
 	int m_type = 3; //if 0 = sin, if 1 = ln, if 3 = else
+	bool m_isDeleted = false;
 };
 
 // GLOBAL OPERATORS

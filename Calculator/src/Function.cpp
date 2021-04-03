@@ -2,26 +2,43 @@
 
 #include "Function.h"
 
+//----------------------------------------------
 int Function::get_type() const {
 	return m_type;
 
 }
+
+//----------------------------------------------
 Polynom* Function::get_polynom() const {
 	return m_polynom;
 }
 
+//----------------------------------------------
 Operator Function::get_operator() const {
 	return m_operator;
 }
 
+//----------------------------------------------
 Function* Function::get_left_function() const {
 	return m_leftFunction;
 }
 
+//----------------------------------------------
 Function* Function::get_right_function() const {
 	return m_rightFunction;
 }
 
+//----------------------------------------------
+bool Function::isDeleted() const {
+	return m_isDeleted;
+}
+
+//----------------------------------------------
+void Function::deleteIt() {
+	m_isDeleted = true;
+}
+
+//----------------------------------------------
 double Function::calculate(double x) const {
 	if (m_polynom) {
 		return m_polynom->calculate(x);
@@ -47,9 +64,10 @@ double Function::calculate(double x) const {
 		else
 			return left;
 	}
+	return 0;
 }
 
-//print Function
+//----------------------------------------------
 std::ostream& operator<<(std::ostream& os, Function* func) {
 	if (func == nullptr) {
 		os << "x";
@@ -81,8 +99,8 @@ std::ostream& operator<<(std::ostream& os, Function* func) {
 			os << " + ";
 			break;
 		case Operator::Multiply:
-			break;
 			os << " * ";
+			break;
 		}
 		os << rightFunc << " )";
 	}
