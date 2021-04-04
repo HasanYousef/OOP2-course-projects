@@ -1,3 +1,3 @@
 #pragma once
 
-enum Operator { Add, Multiply };
+enum Operator { Add, Multiply, Composite };

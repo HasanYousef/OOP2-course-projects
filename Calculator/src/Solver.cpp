@@ -51,7 +51,7 @@ void Solver::run() {
 			createFunc(Operator::Add);
 		}
 		else if (command == "comp") {
-			
+			createFunc(Operator::Composite);
 		}
 		else if (command == "log") {
 			// log(num) / log(base) = log N num

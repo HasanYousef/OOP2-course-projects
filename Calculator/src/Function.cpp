@@ -50,19 +50,19 @@ double Function::calculate(double x) const {
 		return log(x);
 	}
 	else {
-		double left = m_leftFunction->calculate(x);
-		if (m_rightFunction) {
-			double right = m_rightFunction->calculate(x);
-			switch (m_operator)
-			{
-			case Operator::Add:
-				return left + right;
-			case Operator::Multiply:
-				return left * right;
-			}
+		double left = 0,
+			right = 0;
+		right = m_rightFunction->calculate(x);
+		switch (m_operator) {
+		case Operator::Add:
+			left = m_leftFunction->calculate(x);
+			return left + right;
+		case Operator::Multiply:
+			left = m_leftFunction->calculate(x);
+			return left * right;
+		case Operator::Composite:
+			return m_leftFunction->calculate(right);
 		}
-		else
-			return left;
 	}
 	return 0;
 }
