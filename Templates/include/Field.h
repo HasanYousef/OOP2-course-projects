@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Validator.h"
 
 template <class T>
@@ -12,5 +13,5 @@ public:
 private:
 	std::string m_label;
 	T* m_value = nullptr;
-	Validator* m_validator = nullptr;
+	std::vector m_validators<Validator*>;
 };
