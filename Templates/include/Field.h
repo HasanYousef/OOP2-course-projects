@@ -5,13 +5,15 @@
 #include <vector>
 #include "Validator.h"
 
-template <class T>
+template <class T = char>
 class Field {
 public:
-	Field(std::string label) m_label(label) : {};
+	Field(std::string label) : m_label(label) {};
 	void addValidator(const Validator*);
+	void readInput();
+	bool emptyInput() const;
 private:
 	std::string m_label;
 	T* m_value = nullptr;
-	std::vector m_validators<Validator*>;
+	std::vector<Validator*> m_validators;
 };
