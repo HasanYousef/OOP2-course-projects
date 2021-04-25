@@ -5,8 +5,12 @@
 #include <vector>
 #include "Validator.h"
 
-template <class T = char>
-class Field {
+class BaseField {};
+class Hi : public BaseField {};
+
+
+template <class T>
+class Field : public BaseField {
 public:
 	Field(std::string label) : m_label(label) {};
 	void addValidator(const Validator*);

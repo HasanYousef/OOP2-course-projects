@@ -6,23 +6,21 @@
 
 class Form {
 public:
+	void addField(BaseField*);
 	template <class T>
-	void addField(Field<T>*);
-	template <class T>
-	void addValidator(Validator<T>*);
+	void addValidator(const Validator*);
 	void fillForm();
 	bool validateForm();
 private:
-	std::vector<Field<>*> m_fields;
-	std::vector<Validator<>*> m_validators;
+	std::vector<BaseField*> m_fields;
+	std::vector<Validator*> m_validators;
 };
 
-template <class T>
-void Form::addField(Field<T>* field) {
+void Form::addField(BaseField* field) {
 	m_fields.push_back(field);
 }
 
 template <class T>
-void Form::addValidator(Validator<T>* validator) {
+void Form::addValidator(const Validator* validator) {
 	m_validators.push_back(validator);
 }

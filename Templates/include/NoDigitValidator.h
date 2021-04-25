@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Validator.h"
 
-class RangeValidator : public Validator {
+class NoDigitValidator : public Validator {
 public:
 
 private:
