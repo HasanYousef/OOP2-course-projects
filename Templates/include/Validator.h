@@ -1,9 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
-class Validator {
+class BaseValidator {};
+
+template <class T = std::string>
+class Validator : public BaseValidator {
 public:
-
-private:
+	Validator() {};
+	virtual bool validate(class T) const {};
 };
