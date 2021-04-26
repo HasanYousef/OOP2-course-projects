@@ -1,10 +1,12 @@
 #pragma once
 
-#include <iostream>
-#include "Validator.h"
+#include "NoDigitValidator.h"
 
-class RangeValidator : public Validator {
-public:
-
-private:
-};
+bool NoDigitValidator::validate(std::string str) const {
+	for (int chr = 0; chr < str.length(); chr++) {
+		if (str[chr] >= '0' && str[chr] <= '9') {
+			return false;
+		}
+	}
+	return true;
+}

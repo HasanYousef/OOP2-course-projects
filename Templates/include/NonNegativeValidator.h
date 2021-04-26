@@ -3,8 +3,8 @@
 #include <iostream>
 #include "Validator.h"
 
-class RangeValidator : public Validator {
+class NonNegativeValidator : public Validator<int> {
 public:
-
+	bool validate(int) const;
 private:
 };

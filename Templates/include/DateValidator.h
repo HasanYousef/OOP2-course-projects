@@ -3,7 +3,8 @@
 #include <iostream>
 #include "Validator.h"
 
-class RangeValidator : public Validator {
+template <class T>
+class DateValidator : public BaseValidator {
 public:
 
 private:

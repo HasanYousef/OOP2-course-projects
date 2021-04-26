@@ -1,10 +1,7 @@
 #pragma once
 
-#include <iostream>
-#include "Validator.h"
+#include "NonNegativeValidator.h"
 
-class RangeValidator : public Validator {
-public:
-
-private:
-};
+bool NonNegativeValidator::validate(int num) const {
+    return (num >= 0);
+}

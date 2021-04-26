@@ -3,8 +3,9 @@
 #include <iostream>
 #include "Validator.h"
 
-class RangeValidator : public Validator {
+template <class T>
+class NotGreaterThanValidator : public Validator {
 public:
-
+	//bool validate(class T*) const;
 private:
 };

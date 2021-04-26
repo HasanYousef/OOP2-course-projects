@@ -3,11 +3,13 @@
 #include <iostream>
 #include <string>
 
-class BaseValidator {};
+class BaseValidator{
+	virtual bool validate(class T*) const = 0;
+};
 
-template <class T = std::string>
-class Validator : public BaseValidator {
+template <class T>
+class Validator : BaseValidator {
 public:
 	Validator() {};
-	virtual bool validate(class T) const {};
+	virtual bool validate(class T*) const { return true; };
 };

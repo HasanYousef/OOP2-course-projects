@@ -3,8 +3,8 @@
 #include <iostream>
 #include "Validator.h"
 
-class RangeValidator : public Validator {
+class IDValidator : public Validator<uint32_t> {
 public:
-
+	bool validate(class T*) const;
 private:
 };
