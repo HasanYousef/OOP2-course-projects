@@ -3,13 +3,9 @@
 #include <iostream>
 #include <string>
 
-class BaseValidator{
-	virtual bool validate(class T*) const = 0;
-};
-
 template <class T>
-class Validator : BaseValidator {
+class Validator {
 public:
-	Validator() {};
-	virtual bool validate(class T*) const { return true; };
+	virtual Validator(int, int) const = 0;	//Constructor for validators like RangeValidator
+	virtual bool validate(T*) const = 0;
 };

@@ -1,10 +1,17 @@
 #pragma once
 
 #include <iostream>
+#include <time.h>
 #include "Validator.h"
 
-class IDValidator : public Validator<uint32_t> {
-public:
-	bool validate(class T*) const;
-private:
+template <class T>
+class IDValidator : public Validator<T> {
+	virtual bool validate(T*) const;
 };
+
+template <class T>
+bool IDValidator<T>::validate(T* givenID) const {
+
+
+	return true;
+}

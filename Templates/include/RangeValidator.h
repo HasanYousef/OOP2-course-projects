@@ -1,12 +1,17 @@
 #pragma once
 
-#include <iostream>
 #include "Validator.h"
 
 template <class T>
-class RangeValidator : public Validator {
+class RangeValidator : public Validator<T> {
 public:
-	bool validate(class T*) const;
+	RangeValidator(int max, int min) : m_max(max), m_min(min) {};
+	virtual bool validate(T*) const;
 private:
+	int m_max = 0, m_min = 0;
 };
 
+template <class T>
+bool RangeValidator<T>::validate(T* givenYear) const {
+	return givenYearn <= m_max && givenYear >= m_min;
+}
