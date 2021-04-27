@@ -7,15 +7,21 @@ std::string IDValidator::errorMassge() const {
 }
 
 bool IDValidator::validate(uint32_t id) const {
-    int incNum, num, el = 0, sum = 0;
-    while (id != 0) {
-        num = id % 10;
-        incNum = num * ((el % 2) + 1);
-        sum += (incNum > 9) ? incNum - 9 : incNum;
-        id = id / 10;
-        el++;
-    }
-    if (el != 8)
-        return false;
-    return (sum % 10 == 0);
+	std::string str = std::to_string(id);
+
+	if (str.length() != 9) // Make sure ID is formatted properly
+		return false;
+
+	int sum = 0,
+		incNum;
+	for (size_t i = 0; i < str.size(); i++)
+		if (!isdigit(str[i]))
+			return false;
+		else
+		{
+			incNum = ((int)str[i] - '0') * ((i % 2) + 1);
+			sum += (incNum > 9) ? incNum - 9 : incNum;
+		}
+
+	return (sum % 10 == 0);
 }

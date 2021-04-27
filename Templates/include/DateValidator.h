@@ -30,13 +30,13 @@ bool DateValidator<T>::validate(T givenDate) const {
 	givenDate /= 100;
 
 	//checking if the date passed or not
-	if (givenYear > currYear)
+	if (givenYear < currYear)
 		return false;
 	if (givenYear == currYear) {
-		if (givenMonth > currMonth)
+		if (givenMonth < currMonth)
 			return false;
 		if (givenMonth == currMonth) {
-			if (givenDay > currDay)
+			if (givenDay < currDay)
 				return false;
 		}
 	}

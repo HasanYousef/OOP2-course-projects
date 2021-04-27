@@ -3,21 +3,21 @@
 #include <iostream>
 #include <vector>
 #include "Validator.h"
-
-class BaseField;
+#include "Field.h"
 
 class RoomValidator : public Validator<int> {
 public:
-	RoomValidator(std::string str, BaseField* f1,
-		BaseField* f2, BaseField* f3) {
+	RoomValidator(std::string str, Field<int>* f1,
+		Field<int>* f2, Field<int>* f3) {
 		m_label = str;
-		m_field.push_back(f1);
-		m_field.push_back(f2);
-		m_field.push_back(f3);
+		m_fields.push_back(f1);
+		m_fields.push_back(f2);
+		m_fields.push_back(f3);
 	}
+	void refillFields() const;
 	virtual bool validate() const;
 	std::string errorMassge() const;
 private:
 	std::string m_label;
-	std::vector<BaseField*> m_field;
+	std::vector<Field<int>*> m_fields;
 };

@@ -5,7 +5,7 @@
 template <class T>
 class RangeValidator : public Validator<int> {
 public:
-	RangeValidator(int max, int min) : m_max(max), m_min(min) {};
+	RangeValidator(int min, int max) : m_min(min), m_max(max) {};
 	virtual bool validate(int) const;
 private:
 	int m_max = 0, m_min = 0;

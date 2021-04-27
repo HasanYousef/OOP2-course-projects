@@ -4,9 +4,8 @@
 #include <string>
 #include <vector>
 #include "Field.h"
-
-class RoomValidator;
-class SumValidator;
+#include "RoomValidator.h"
+#include "SumValidator.h"
 
 class Form {
 public:
