@@ -22,18 +22,6 @@ private:
 	Validator<T>* m_validator = nullptr;
 };
 
-template<>
-void Field<std::string>::readInput() {
-	std::cout << m_label << std::endl;
-	std::cin >> m_value;
-}
-
-template<>
-void Field<int>::readInput() {
-	std::cout << m_label << std::endl;
-	std::cin >> m_value;
-}
-
 template <class T>
 std::ostream& operator<<(std::ostream& os, const Field<T>& dt) {
 	os << dt.getLabel() << " = " << dt.getContent() << "		";
