@@ -2,7 +2,7 @@
 
 #include "SumValidator.h"
 
-bool SumValidator::validate(int) {
+bool SumValidator::validate() {
 	return true;
 }
 

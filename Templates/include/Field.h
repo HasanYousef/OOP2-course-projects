@@ -25,11 +25,17 @@ public:
 private:
 	std::string m_label;
 	T m_value;
-	std::vector<Validator<T>*> m_validators;
+	Validator<T>* m_validator;
 };
 
-template<class T>
-void Field<T>::readInput() {
+template<>
+void Field<std::string>::readInput() {
+	std::cout << m_label << std::endl;
+	std::cin >> m_value;
+}
+
+template<>
+void Field<int>::readInput() {
 	std::cout << m_label << std::endl;
 	std::cin >> m_value;
 }
@@ -41,23 +47,19 @@ std::ostream& operator<<(std::ostream& os, const Field<T>& dt) {
 
 template <class T>
 void Field<T>::addValidator(Validator<T>* validator) {
-	m_validators.push_back(validator);
+	m_validator = validator;
 }
 
 //returns true if the input is valid
 template<class T>
 bool Field<T>::validate() const {
-	for (int i = 0; i < m_validators.size(); i++)
-		if (!m_validators[i]->validate(m_value))
-			return false;
-	return true;
+	return m_validator->validate(m_value);
 }
 
 template<class T>
 std::string Field<T>::errorMassge() const
 {
-	for (int i = 0; i < m_validators.size(); i++)
-		m_validators[i]->errorMassge();
+	return m_validator->errorMassge();
 }
 
 template<class T>

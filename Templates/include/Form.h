@@ -22,7 +22,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& os, Form& dt) {
-	os << "-------------------------------------------------------------------------\n";
+	/*os << "-------------------------------------------------------------------------\n";
 	for (int el = 0; el < dt.size(); el++) {
 		auto field = dt.getField(el);
 		os << field << " ";
@@ -30,16 +30,16 @@ std::ostream& operator<<(std::ostream& os, Form& dt) {
 			os << field->errorMassge();
 		}
 		os << "\n-------------------------------------------------------------------------\n";
-	}
+	}*/
 	return os;
 }
 
 void Form::fillForm() {
-	for (int el = 0; el < m_fields.size(); el++) {
+	/*for (int el = 0; el < m_fields.size(); el++) {
 		if (!m_fields[el]->validate()) {
 			m_fields[el]->readInput();
 		}
-	}
+	}*/
 }
 
 BaseField* Form::getField(int el) {
@@ -47,11 +47,11 @@ BaseField* Form::getField(int el) {
 }
 
 bool Form::validateForm() {
-	for (int el = 0; el < m_fields.size(); el++) {
+	/*for (int el = 0; el < m_fields.size(); el++) {
 		if (m_fields[el]->validate()) {
 			return false;
 		}
-	}
+	}*/
 	return true;
 }
 

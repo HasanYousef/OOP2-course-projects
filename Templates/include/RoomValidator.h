@@ -6,15 +6,16 @@
 
 class RoomValidator : public Validator<int> {
 public:
-	RoomValidator(std::string str, Field<BaseField>* f1,
-		Field<BaseField>* f2, Field<BaseField>* f3) {
+	RoomValidator(std::string str, BaseField* f1,
+		BaseField* f2, BaseField* f3) {
 		m_label = str;
 		m_field.push_back(f1);
 		m_field.push_back(f2);
 		m_field.push_back(f3);
 	}
+	virtual bool validate() { return false; };
 	std::string errorMassge() const;
 private:
 	std::string m_label;
-	std::vector<Field<BaseField>*> m_field;
+	std::vector<BaseField*> m_field;
 };

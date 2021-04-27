@@ -11,7 +11,7 @@ public:
 		m_totalPeopleField(f1),
 		m_kidsUnder18Field(f2),
 		m_adultsAbove18Field(f3) {}
-	virtual bool validate(int);
+	virtual bool validate();
 	virtual std::string errorMassge() const;
 private:
 	std::string m_errorMessage;

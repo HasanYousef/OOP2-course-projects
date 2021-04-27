@@ -6,12 +6,13 @@
 template <class T>
 class NotGreaterThanValidator : public Validator<T> {
 public:
-	bool validate(T*, T*) const;
+	NotGreaterThanValidator(int max) : m_max(max) {};
+	bool validate(T) const;
 private:
+	int m_max;
 };
 
 template<class T>
-bool NotGreaterThanValidator<T>::validate(T* par1, T* par2) const
-{
-	return (par1 <= par2);
+bool NotGreaterThanValidator<T>::validate(T num) const {
+	return (num <= m_max);
 }
