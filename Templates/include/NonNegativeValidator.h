@@ -3,8 +3,11 @@
 #include <iostream>
 #include "Validator.h"
 
-class NonNegativeValidator : public Validator<int> {
+template <class T>
+class NonNegativeValidator : public Validator<T>{
 public:
-	bool validate(int) const;
+	bool validate(T*) const;
+	std::string errorMassge() const;
 private:
 };
+

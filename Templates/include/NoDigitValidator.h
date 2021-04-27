@@ -6,5 +6,5 @@
 class NoDigitValidator : public Validator<std::string> {
 public:
 	bool validate(std::string str) const;
-private:
-};	 
+	virtual std::string errorMassge() const;
+};

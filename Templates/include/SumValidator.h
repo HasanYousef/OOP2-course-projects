@@ -3,8 +3,7 @@
 #include <iostream>
 #include "Validator.h"
 
-template <class T>
-class SumValidator : public Validator {
+class SumValidator : public Validator<int> {
 public:
 
 private:

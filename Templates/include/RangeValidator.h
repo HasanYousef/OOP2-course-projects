@@ -10,8 +10,3 @@ public:
 private:
 	int m_max = 0, m_min = 0;
 };
-
-template <class T>
-bool RangeValidator<T>::validate(T* givenYear) const {
-	return givenYearn <= m_max && givenYear >= m_min;
-}

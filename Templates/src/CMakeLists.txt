@@ -2,7 +2,6 @@
 "main.cpp"
 "Field.cpp"
 "Form.cpp"
-"Validator.cpp"
 "NonNegativeValidator.cpp"
 "SumValidator.cpp"
 "RoomValidator.cpp"
@@ -11,5 +10,4 @@
 "NoDigitValidator.cpp"
 "DateValidator.cpp"
 "IDValidator.cpp"
-
 )

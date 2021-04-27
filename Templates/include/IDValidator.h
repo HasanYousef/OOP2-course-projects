@@ -4,14 +4,7 @@
 #include <time.h>
 #include "Validator.h"
 
-template <class T>
-class IDValidator : public Validator<T> {
-	virtual bool validate(T*) const;
+class IDValidator : public Validator<uint32_t> {
+	virtual bool validate(uint32_t) const;
+	std::string errorMassge() const;
 };
-
-template <class T>
-bool IDValidator<T>::validate(T* givenID) const {
-
-
-	return true;
-}

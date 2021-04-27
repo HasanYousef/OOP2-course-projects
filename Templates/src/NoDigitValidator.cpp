@@ -10,3 +10,7 @@ bool NoDigitValidator::validate(std::string str) const {
 	}
 	return true;
 }
+
+std::string NoDigitValidator::errorMassge() const {
+	return "Can't contain digits";
+}

@@ -4,8 +4,9 @@
 #include "Validator.h"
 
 template <class T>
-class NotGreaterThanValidator : public Validator {
+class NotGreaterThanValidator : public Validator<T> {
 public:
-	//bool validate(class T*) const;
+	bool validate(T*, T*) const;
 private:
 };
+
