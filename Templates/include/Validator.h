@@ -6,8 +6,7 @@
 template <class T>
 class Validator {
 public:
-	virtual validator(T*, T*) const = 0;	//Constructor for validators like RangeValidator
-	virtual bool validate(T*) const = 0;
+	virtual bool validate(T) const { return false; };
 	virtual std::string errorMassge() const;
 };
 
