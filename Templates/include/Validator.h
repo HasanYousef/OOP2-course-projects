@@ -3,11 +3,6 @@
 #include <iostream>
 #include <string>
 
-class BaseValidator {
-	virtual bool validate(T*) const = 0;
-
-};
-
 template <class T>
 class Validator {
 public:
@@ -18,5 +13,5 @@ public:
 
 template <class T>
 std::string Validator<T>::errorMassge() const {
-	std::cout << "The input you intered is not valid." << std::endl;
+	return "The input you intered is not valid.";
 }

@@ -27,10 +27,13 @@ void Form::addField(BaseField* field) {
 	m_fields.push_back(field);
 }
 
-void Form::addValidator(BaseValidator* validator) {
-	m_validators.push_back(validator);
+void Form::addValidator(SumValidator* validator) {
+	m_sumValidator = validator;
 }
 
+void Form::addValidator(RoomValidator* validator) {
+	m_roomValidator = validator;
+}
 int Form::size() const {
 	return m_fields.size();
 }
