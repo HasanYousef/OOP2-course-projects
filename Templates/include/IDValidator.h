@@ -22,7 +22,3 @@ bool IDValidator::validate(uint32_t id) const {
         return false;
     return (sum % 10 == 0);
 }
-
-std::string IDValidator::errorMassge() const {
-    return "Wrong control digit";
-}

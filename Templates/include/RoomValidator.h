@@ -1,8 +1,10 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 #include "Validator.h"
-#include "Field.h"
+
+class BaseField;
 
 class RoomValidator : public Validator<int> {
 public:
@@ -13,7 +15,7 @@ public:
 		m_field.push_back(f2);
 		m_field.push_back(f3);
 	}
-	virtual bool validate() { return false; };
+	virtual bool validate() const;
 	std::string errorMassge() const;
 private:
 	std::string m_label;

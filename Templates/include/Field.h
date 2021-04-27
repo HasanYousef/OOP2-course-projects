@@ -3,14 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "BaseField.h"
 #include "Validator.h"
-
-class BaseField {
-public:
-	virtual void readInput() {};
-	virtual bool validate() const { return false; };
-	virtual std::string errorMassge() const { return ""; };
-};
 
 template <class T>
 class Field : public BaseField {
@@ -25,7 +19,7 @@ public:
 private:
 	std::string m_label;
 	T m_value;
-	Validator<T>* m_validator;
+	Validator<T>* m_validator = nullptr;
 };
 
 template<>

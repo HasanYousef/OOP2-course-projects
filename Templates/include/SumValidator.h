@@ -4,6 +4,7 @@
 #include "Validator.h"
 #include "Field.h"
 
+
 class SumValidator : public Validator<int> {
 public:
 	SumValidator(std::string errMsg, Field<int>* f1, Field<int>* f2, Field<int>* f3) :
