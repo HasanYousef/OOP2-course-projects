@@ -6,6 +6,7 @@ std::string IDValidator::errorMassge() const {
     return "Wrong control digit";
 }
 
+// checks if the control digit is the right one in the id
 bool IDValidator::validate(uint32_t id) const {
 	std::string str = std::to_string(id);
 

@@ -6,7 +6,7 @@
 template <class T>
 class Validator {
 public:
-	virtual bool validate(T) const;
+	virtual bool validate(T) const;		// retuns true if the input is valid
 	virtual std::string errorMassge() const;
 };
 

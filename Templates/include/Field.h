@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include <vector>
 #include "BaseField.h"
 #include "Validator.h"
 
@@ -24,16 +23,13 @@ private:
 	bool m_entered = false;
 };
 
+// prints the label and the given input
 template <class T>
 void Field<T>::printField() const {
 	std::cout << m_label << " = " << m_value << "		";
 }
 
-template <class T>
-std::ostream& operator<<(std::ostream& os, const Field<T>& dt) {
-	os << dt.getLabel() << " = " << dt.getContent() << "		";
-}
-
+// adding a valuation test
 template <class T>
 void Field<T>::addValidator(Validator<T>* validator) {
 	m_validator = validator;
@@ -51,6 +47,8 @@ std::string Field<T>::errorMassge() const
 	return m_validator->errorMassge();
 }
 
+// reading the input from the user for this field and mark
+// that their is a value entered
 template <class T>
 void Field<T>::readInput() {
 	std::cout << m_label << std::endl;
@@ -58,11 +56,13 @@ void Field<T>::readInput() {
 	m_entered = true;
 }
 
+// getting the title of the field
 template<class T>
 std::string Field<T>::getLabel() const {
 	return m_label;
 }
 
+// returning the input theat tee user gave
 template<class T>
 T Field<T>::getContent() const {
 	return m_value;

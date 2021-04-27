@@ -2,6 +2,7 @@
 
 #include "NoDigitValidator.h"
 
+// makes sure that there is no digit in the string
 bool NoDigitValidator::validate(std::string str) const {
 	if (str.length() == 0)
 		return false;

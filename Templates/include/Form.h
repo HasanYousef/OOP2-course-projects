@@ -18,8 +18,9 @@ public:
 	int size() const;
 private:
 	std::vector<BaseField*> m_fields;
-	SumValidator* m_sumValidator = nullptr;
-	RoomValidator* m_roomValidator = nullptr;
+	SumValidator* m_sumValidator = nullptr;		//form sum validator
+	RoomValidator* m_roomValidator = nullptr;	// form room validator
 };
 
+// print operator
 std::ostream& operator<<(std::ostream&, Form&);

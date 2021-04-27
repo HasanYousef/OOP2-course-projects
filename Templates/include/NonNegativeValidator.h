@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Validator.h"
 
+// checks if the number is not negative
 template <class T>
 class NonNegativeValidator : public Validator<T>{
 public:
@@ -11,6 +12,7 @@ public:
 private:
 };
 
+// retuns true if the number is not negative
 template<class T>
 inline bool NonNegativeValidator<T>::validate(T num) const
 {

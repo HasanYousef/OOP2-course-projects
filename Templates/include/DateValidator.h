@@ -3,6 +3,7 @@
 #include <time.h>
 #include "Validator.h"
 
+// checks if the given date didn't pass yet
 template <class T>
 class DateValidator : public Validator<T> {
 	bool validate(T) const;
@@ -14,11 +15,12 @@ bool DateValidator<T>::validate(T givenDate) const {
 	time_t tt;
 	time(&tt);
 	tm TM = *localtime(&tt);
-
+	// calculating the curr date
 	int currYear = TM.tm_year + 1900,
 		currMonth = TM.tm_mon,
 		currDay = TM.tm_mday;
 
+	// parsing the given number into 3 numbers: day, month and year
 	int givenYear,
 		givenMonth,
 		givenDay;
@@ -44,6 +46,7 @@ bool DateValidator<T>::validate(T givenDate) const {
 	return true;
 }
 
+// returning the error message
 template<class T>
 std::string DateValidator<T>::errorMassge() const {
 	return "Out of range";

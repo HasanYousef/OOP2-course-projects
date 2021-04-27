@@ -2,6 +2,7 @@
 
 #include "SumValidator.h"
 
+// retuns true if the total num of peopls = kids + adults
 bool SumValidator::validate() const {
 	return (
 		(m_adultsAbove18Field->getContent() + m_kidsUnder18Field->getContent())
@@ -9,6 +10,7 @@ bool SumValidator::validate() const {
 	);
 }
 
+// asks the user to refill the number of people related fields
 void SumValidator::refillFields() const {
 	m_totalPeopleField->readInput();
 	m_kidsUnder18Field->readInput();

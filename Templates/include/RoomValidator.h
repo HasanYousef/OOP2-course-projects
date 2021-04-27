@@ -19,5 +19,5 @@ public:
 	std::string errorMassge() const;
 private:
 	std::string m_label;
-	std::vector<Field<int>*> m_fields;
+	std::vector<Field<int>*> m_fields;	//stores the fields related to the rooms
 };
