@@ -1,0 +1,10 @@
+﻿target_sources (oop2_ex01 PRIVATE "main.cpp"
+                                  "FunctionCalculator.cpp"
+                                  "Function.cpp"
+                                  "Sin.cpp"
+                                  "Ln.cpp"
+                                  "Poly.cpp"
+                                  "Mul.cpp"
+                                  "Add.cpp"
+                                  "Comp.cpp"
+                                  "Log.cpp")
