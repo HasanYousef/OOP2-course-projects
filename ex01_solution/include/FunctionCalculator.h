@@ -24,8 +24,10 @@ private:
     void help();
     void exit();
     //----------------
-    void read();
+    void readFile();
+    void openFile();
     void readMaxNumOfFuncs();
+    std::istream* getFile(std::string);
     int readNum();
 
     template <typename FuncType>
@@ -66,7 +68,7 @@ private:
     const ActionMap m_actions;
     FunctionList m_functions;
     bool m_running = true;
-    std::istream& m_istr;
+    std::istream* m_istr;
     std::ostream& m_ostr;
 
     std::optional<int> readFunctionIndex() const;

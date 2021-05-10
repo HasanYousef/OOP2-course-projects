@@ -22,7 +22,7 @@ void FunctionCalculator::run()
 {
     //get max number of function
     readMaxNumOfFuncs();
-
+    
     m_ostr << std::setprecision(2) << std::fixed;
     do
     {
@@ -49,7 +49,7 @@ void FunctionCalculator::eval()
 
         try {
             // if the didn't give a valid int it will throw an err
-            m_istr >> x;
+            *m_istr >> x;
 
             sstr << std::setprecision(2) << std::fixed << x;
             m_ostr << m_functions[*i]->to_string(sstr.str())
@@ -70,10 +70,10 @@ void FunctionCalculator::poly()
     try {
         // if the didn't give a valid int it will throw an err
         int n;
-        m_istr >> n;
+        *m_istr >> n;
         auto coeffs = std::vector<double>(n);
         for (auto& coeff : coeffs) {
-            m_istr >> n;
+            *m_istr >> n;
             coeffs.push_back(n);
         }
         m_functions.push_back(std::make_shared<Poly>(coeffs));
@@ -89,7 +89,7 @@ void FunctionCalculator::log()
     try {
         // if the didn't give a valid int it will throw an err
         int base;
-        m_istr >> base;
+        *m_istr >> base;
         if (base <= 1) {
             throw std::range_error("can't insert a base less than 1\n");
         }
@@ -144,7 +144,7 @@ void FunctionCalculator::printFunctions() const
 std::optional<int> FunctionCalculator::readFunctionIndex() const
 {
     auto i = 0;
-    m_istr >> i;
+    *m_istr >> i;
     if (i >= m_functions.size())
     {
         m_ostr << "Function #" << i << " doesn't exist\n";
@@ -156,7 +156,7 @@ std::optional<int> FunctionCalculator::readFunctionIndex() const
 FunctionCalculator::Action FunctionCalculator::readAction() const
 {
     auto action = std::string();
-    m_istr >> action;
+    *m_istr >> action;
 
     for (decltype(m_actions.size()) i = 0; i < m_actions.size(); ++i)
     {
@@ -184,7 +184,7 @@ void FunctionCalculator::runAction(Action action)
         case Action::Add:  binaryFunc<Add>();  break;
         case Action::Comp: binaryFunc<Comp>(); break;
         case Action::Log:  log();              break;
-        case Action::Read: read();             break;
+        case Action::Read: readFile();         break;
         case Action::Del:  del();              break;
         case Action::Help: help();             break;
         case Action::Exit: exit();             break;
@@ -227,6 +227,11 @@ FunctionCalculator::ActionMap FunctionCalculator::createActions()
             "log",
             " N num - create a function that is the log_N of function #num",
             Action::Log
+        },
+        {
+            "read",
+            " path-name - Enter the path name of the file that you want to read the commands from",
+            Action::Read
         },
         {
             "del",
@@ -276,29 +281,46 @@ void FunctionCalculator::readMaxNumOfFuncs() {
     } while (m_maxNumOfFuncs == 0);
 }
 
-void FunctionCalculator::read() {
-    std::string fileName;
-    std::ifstream file;
-    //read file name and open it
+void FunctionCalculator::readFile() {
     try {
-        m_istr >> fileName;
-        file.open(fileName);
-        if (!file.is_open()) {
-            throw std::ifstream::failure("cant open the file\n");
-        }
+        std::istream* prevIstream = m_istr;
+        openFile();
+
     }
-    catch (const std::ifstream::failure err) {
+    catch (const std::invalid_argument err) {
         m_ostr << err.what();
     }
+}
+
+void FunctionCalculator::openFile() {
+    std::string fileName;
+    //read file name and open it
+    *m_istr >> fileName;
+    getFile(fileName);
+}
+
+std::istream* FunctionCalculator::getFile(std::string file_path)
+{
+    std::ifstream* File = new std::ifstream(file_path);
+    std::istream* ifile = File;
+
+    // if file exists
+    if ((*ifile)) {
+        return ifile;
+    }
+    // if file does exists
+    else
+        throw std::invalid_argument("file \"" + file_path + "\" doesnt exist\n");
 }
 
 // Returns true if s is a number else false
 int FunctionCalculator::readNum()
 {
     std::string s;
-    m_istr >> s;
+    *m_istr >> s;
     for (int i = 0; i < s.length(); i++)
         if (isdigit(s[i]) == false)
             throw std::domain_error("invalid number\n");
     return std::stoi(s);
 }
+
