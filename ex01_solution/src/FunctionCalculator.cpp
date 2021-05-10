@@ -13,8 +13,6 @@
 #include <iomanip>
 #include <sstream>
 
-class invalid {};
-
 FunctionCalculator::FunctionCalculator(std::istream& istr, std::ostream& ostr)
     : m_actions(createActions()), m_functions(createFunctions()), m_istr(istr), m_ostr(ostr)
 {
@@ -22,6 +20,9 @@ FunctionCalculator::FunctionCalculator(std::istream& istr, std::ostream& ostr)
 
 void FunctionCalculator::run()
 {
+    //get max number of function
+    readMaxNumOfFuncs();
+
     m_ostr << std::setprecision(2) << std::fixed;
     do
     {
@@ -34,7 +35,7 @@ void FunctionCalculator::run()
             runAction(action);
         }
         catch (std::domain_error err) {
-            m_ostr << "Command not found\n";
+            m_ostr << err.what();
         }
     } while (m_running);
 }
@@ -44,35 +45,65 @@ void FunctionCalculator::eval()
     if (auto i = readFunctionIndex(); i)
     {
         auto x = 0.;
-        m_istr >> x;
         auto sstr = std::ostringstream();
-        sstr << std::setprecision(2) << std::fixed << x;
-        m_ostr << m_functions[*i]->to_string(sstr.str())
-            << " = "
-            << (*m_functions[*i])(x)
-            << '\n';
+
+        try {
+            // if the didn't give a valid int it will throw an err
+            m_istr >> x;
+
+            sstr << std::setprecision(2) << std::fixed << x;
+            m_ostr << m_functions[*i]->to_string(sstr.str())
+                << " = "
+                << (*m_functions[*i])(x)
+                << '\n';
+        }
+        //if intered an invalid int
+        catch (const std::ios_base::failure& err) {
+            m_ostr << err.what();
+        }
     }
 }
 
 void FunctionCalculator::poly()
 {
-    auto n = 0;
-    m_istr >> n;
-    auto coeffs = std::vector<double>(n);
-    for (auto& coeff : coeffs)
-    {
-        m_istr >> coeff;
+
+    try {
+        // if the didn't give a valid int it will throw an err
+        int n;
+        m_istr >> n;
+        auto coeffs = std::vector<double>(n);
+        for (auto& coeff : coeffs) {
+            m_istr >> n;
+            coeffs.push_back(n);
+        }
+        m_functions.push_back(std::make_shared<Poly>(coeffs));
     }
-    m_functions.push_back(std::make_shared<Poly>(coeffs));
+    //if intered an invalid int
+    catch (const std::ios_base::failure& err) {
+        m_ostr << err.what();
+    }
 }
 
 void FunctionCalculator::log()
 {
-    auto base = 0;
-    m_istr >> base;
-    if (auto f = readFunctionIndex(); f)
-    {
-        m_functions.push_back(std::make_shared<Log>(base, m_functions[*f]));
+    try {
+        // if the didn't give a valid int it will throw an err
+        int base;
+        m_istr >> base;
+        if (base <= 1) {
+            throw std::range_error("can't insert a base less than 1\n");
+        }
+        if (auto f = readFunctionIndex(); f)
+        {
+            m_functions.push_back(std::make_shared<Log>(base, m_functions[*f]));
+        }
+    }
+    //if intered an invalid int
+    catch (const std::ios_base::failure& err) {
+        m_ostr << err.what();
+    }
+    catch (const std::range_error negNum) {
+        m_ostr << negNum.what();
     }
 }
 
@@ -136,7 +167,7 @@ FunctionCalculator::Action FunctionCalculator::readAction() const
     }
 
     // in case that the user entered an invalid action
-    throw std::domain_error("Command not found");
+    throw std::domain_error("Command not found\n");
 }
 
 void FunctionCalculator::runAction(Action action)
@@ -153,6 +184,7 @@ void FunctionCalculator::runAction(Action action)
         case Action::Add:  binaryFunc<Add>();  break;
         case Action::Comp: binaryFunc<Comp>(); break;
         case Action::Log:  log();              break;
+        case Action::Read: read();             break;
         case Action::Del:  del();              break;
         case Action::Help: help();             break;
         case Action::Exit: exit();             break;
@@ -221,4 +253,52 @@ FunctionCalculator::FunctionList FunctionCalculator::createFunctions()
         std::make_shared<Sin>(),
         std::make_shared<Ln>()
     };
+}
+
+//===NEW-FUNCTION-ADDED===========================
+void FunctionCalculator::readMaxNumOfFuncs() {
+    int num;
+    do {
+        try {
+            num = readNum();
+            if (num < 2 || num > 100) {
+                throw std::out_of_range("out of range: 2 and 100\n");
+            }
+            m_maxNumOfFuncs = num;
+        }
+        //if intered an invalid int
+        catch (std::domain_error err) {
+            m_ostr << err.what();
+        }
+        catch (const std::out_of_range& err) {
+            m_ostr << err.what();
+        }
+    } while (m_maxNumOfFuncs == 0);
+}
+
+void FunctionCalculator::read() {
+    std::string fileName;
+    std::ifstream file;
+    //read file name and open it
+    try {
+        m_istr >> fileName;
+        file.open(fileName);
+        if (!file.is_open()) {
+            throw std::ifstream::failure("cant open the file\n");
+        }
+    }
+    catch (const std::ifstream::failure err) {
+        m_ostr << err.what();
+    }
+}
+
+// Returns true if s is a number else false
+int FunctionCalculator::readNum()
+{
+    std::string s;
+    m_istr >> s;
+    for (int i = 0; i < s.length(); i++)
+        if (isdigit(s[i]) == false)
+            throw std::domain_error("invalid number\n");
+    return std::stoi(s);
 }

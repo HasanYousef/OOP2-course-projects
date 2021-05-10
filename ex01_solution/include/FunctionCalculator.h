@@ -1,10 +1,12 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <memory>
 #include <string>
 #include <iosfwd>
 #include <optional>
+#include <fstream> //added
 
 class Function;
 
@@ -13,7 +15,7 @@ class FunctionCalculator
 public:
     FunctionCalculator(std::istream& istr, std::ostream& ostr);
     void run();
-
+    
 private:
     void eval();
     void poly();
@@ -21,6 +23,10 @@ private:
     void del();
     void help();
     void exit();
+    //----------------
+    void read();
+    void readMaxNumOfFuncs();
+    int readNum();
 
     template <typename FuncType>
     void binaryFunc()
@@ -41,6 +47,7 @@ private:
         Add,
         Comp,
         Log,
+        Read,
         Del,
         Help,
         Exit,
@@ -68,4 +75,6 @@ private:
 
     static ActionMap createActions();
     static FunctionList createFunctions();
+    //--added----
+    int m_maxNumOfFuncs = 0;
 };

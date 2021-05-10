@@ -9,6 +9,9 @@ Log::Log(int base, const std::shared_ptr<Function>& func)
 
 double Log::operator()(double x) const
 {
+    if (x <= 0 || x == 1) {
+        throw std::exception("log func cant eval 1 or number <= 0\n");
+    }
     return std::log((*m_func)(x)) / std::log(m_base);
 }
 
