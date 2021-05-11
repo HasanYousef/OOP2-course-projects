@@ -399,7 +399,7 @@ int FunctionCalculator::readNum()
     std::string s;
     *m_istr >> s;
     for (int i = 0; i < s.length(); i++)
-        if (isdigit(s[i]) == false)
+        if (!isdigit(s[i]))
             throw std::domain_error("Enter a number\n");
     return std::stoi(s);
 }
