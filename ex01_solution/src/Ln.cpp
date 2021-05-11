@@ -4,7 +4,7 @@
 
 double Ln::operator()(double x) const
 {
-	if (x <= 0 || x ==1) {
+	if (x <= 1) {
 		throw std::exception("Ln func cant eval 1 or number <= 0\n");
 	}
 	return std::log(x);

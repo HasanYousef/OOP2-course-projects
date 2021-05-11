@@ -14,7 +14,7 @@
 #include <sstream>
 
 FunctionCalculator::FunctionCalculator(std::istream& istr, std::ostream& ostr)
-    : m_actions(createActions()), m_functions(createFunctions()), m_istr(istr), m_ostr(ostr)
+    : m_actions(createActions()), m_functions(createFunctions()), m_istr(&istr), m_ostr(ostr)
 {
 }
 
@@ -37,20 +37,38 @@ void FunctionCalculator::run()
         catch (std::domain_error err) {
             m_ostr << err.what();
         }
+        catch (std::out_of_range err) {
+            m_ostr << err.what();
+        }
+        catch (std::length_error err) {
+            std::string answer;
+            m_ostr << "The number you gave is smaller than the number of functions, " <<
+                "Do you want to resize anyway? if yes it will delete the last functions from the list (y/n)?\n";
+            *m_istr >> answer;
+            if (answer == "yes" || answer == "y") {
+                // removing the last functions from the functions list
+                std::vector<std::shared_ptr<Function>> newFuncs;
+                m_maxNumOfFuncs = std::stoi(err.what());
+                for (int i = 0; i < m_maxNumOfFuncs; i++)
+                    newFuncs.push_back(m_functions[i]);
+                m_functions = newFuncs;
+            }
+        }
     } while (m_running);
 }
 
 void FunctionCalculator::eval()
 {
-    if (auto i = readFunctionIndex(); i)
+    if (auto i = readFunctionIndex(); i && i != -1)
     {
         auto x = 0.;
         auto sstr = std::ostringstream();
 
         try {
             // if the didn't give a valid int it will throw an err
-            *m_istr >> x;
-
+            std::string num;
+            *m_istr >> num;
+            x = std::stod(num); //convert to double: stod do throw automatic
             sstr << std::setprecision(2) << std::fixed << x;
             m_ostr << m_functions[*i]->to_string(sstr.str())
                 << " = "
@@ -58,7 +76,7 @@ void FunctionCalculator::eval()
                 << '\n';
         }
         //if intered an invalid int
-        catch (const std::ios_base::failure& err) {
+        catch (const std::exception& err) { // exeption instead std::ios::failiar
             m_ostr << err.what();
         }
     }
@@ -66,15 +84,14 @@ void FunctionCalculator::eval()
 
 void FunctionCalculator::poly()
 {
-
     try {
         // if the didn't give a valid int it will throw an err
         int n;
-        *m_istr >> n;
+        n = readNum();  //added
         auto coeffs = std::vector<double>(n);
-        for (auto& coeff : coeffs) {
-            *m_istr >> n;
-            coeffs.push_back(n);
+        for (int i = 0; i < coeffs.size(); i++) {
+            n = readNum(); //added
+            coeffs[i] = n;
         }
         m_functions.push_back(std::make_shared<Poly>(coeffs));
     }
@@ -89,11 +106,11 @@ void FunctionCalculator::log()
     try {
         // if the didn't give a valid int it will throw an err
         int base;
-        *m_istr >> base;
+        base = readNum();
         if (base <= 1) {
             throw std::range_error("can't insert a base less than 1\n");
         }
-        if (auto f = readFunctionIndex(); f)
+        if (auto f = readFunctionIndex(); f != -1 && f) //added f!=-1 to make sure valid input
         {
             m_functions.push_back(std::make_shared<Log>(base, m_functions[*f]));
         }
@@ -109,7 +126,7 @@ void FunctionCalculator::log()
 
 void FunctionCalculator::del()
 {
-    if (auto i = readFunctionIndex(); i)
+    if (auto i = readFunctionIndex(); i != -1 && i)
     {
         m_functions.erase(m_functions.begin() + *i);
     }
@@ -143,14 +160,22 @@ void FunctionCalculator::printFunctions() const
 
 std::optional<int> FunctionCalculator::readFunctionIndex() const
 {
-    auto i = 0;
-    *m_istr >> i;
-    if (i >= m_functions.size())
-    {
-        m_ostr << "Function #" << i << " doesn't exist\n";
-        return {};
+    int i = 0;
+    std::string str;
+    try {
+        *m_istr >> str;
+        i = stoi(str);
+        if (i >= m_functions.size())
+        {
+            m_ostr << "Function #" << i << " doesn't exist\n";
+            return {};
+        }
+        return i; //valid input
     }
-    return i;
+    catch (const std::exception& err) {
+        m_ostr << err.what();
+    }
+    return -1; //wrong input
 }
 
 FunctionCalculator::Action FunctionCalculator::readAction() const
@@ -172,6 +197,16 @@ FunctionCalculator::Action FunctionCalculator::readAction() const
 
 void FunctionCalculator::runAction(Action action)
 {
+    //if reached the max num of functions
+    if (m_functions.size() >= m_maxNumOfFuncs && 
+        (action == Action::Poly ||
+            action == Action::Mul ||
+            action == Action::Add || 
+            action == Action::Comp ||
+            action == Action::Log)) {
+        throw std::out_of_range("You can't add a new function, you reached the max number of fucntions\n");
+    }
+
     switch (action)
     {
         default:
@@ -185,6 +220,7 @@ void FunctionCalculator::runAction(Action action)
         case Action::Comp: binaryFunc<Comp>(); break;
         case Action::Log:  log();              break;
         case Action::Read: readFile();         break;
+        case Action::Resize: resize();         break;
         case Action::Del:  del();              break;
         case Action::Help: help();             break;
         case Action::Exit: exit();             break;
@@ -234,6 +270,11 @@ FunctionCalculator::ActionMap FunctionCalculator::createActions()
             Action::Read
         },
         {
+            "resize",
+            " num - Reset the max num of functions that could be stored in the functions list",
+            Action::Resize
+        },
+        {
             "del",
             "(ete) num - delete function #num from the function list",
             Action::Del
@@ -265,6 +306,7 @@ void FunctionCalculator::readMaxNumOfFuncs() {
     int num;
     do {
         try {
+            m_ostr << "Enter the max number of functions that you want to store: ";
             num = readNum();
             if (num < 2 || num > 100) {
                 throw std::out_of_range("out of range: 2 and 100\n");
@@ -283,11 +325,49 @@ void FunctionCalculator::readMaxNumOfFuncs() {
 
 void FunctionCalculator::readFile() {
     try {
+        // storing the current input stream
         std::istream* prevIstream = m_istr;
         openFile();
 
+        m_ostr << std::setprecision(2) << std::fixed;
+        do
+        {
+            // try to read ad action from the user
+            try {
+                const auto action = readAction();
+                runAction(action);
+            }
+            catch (std::domain_error err) {
+                m_ostr << err.what();
+            }
+            catch (std::out_of_range err) {
+                m_ostr << err.what();
+            }
+        } while (m_running && !m_istr->eof());
+
+        // recovering the old input stream
+        m_istr = prevIstream;
     }
     catch (const std::invalid_argument err) {
+        m_ostr << err.what();
+    }
+}
+
+void FunctionCalculator::resize() {
+    try {
+        int num = readNum();
+        if (num < 2 || num > 100) {
+            throw std::out_of_range("out of range: 2 and 100\n");
+        }
+        if (num < m_functions.size())
+            throw std::length_error(std::to_string(num));
+        m_maxNumOfFuncs = num;
+    }
+    //if intered an invalid int
+    catch (std::domain_error err) {
+        m_ostr << err.what();
+    }
+    catch (const std::out_of_range& err) {
         m_ostr << err.what();
     }
 }
@@ -296,7 +376,7 @@ void FunctionCalculator::openFile() {
     std::string fileName;
     //read file name and open it
     *m_istr >> fileName;
-    getFile(fileName);
+    m_istr =  getFile(fileName);
 }
 
 std::istream* FunctionCalculator::getFile(std::string file_path)
@@ -320,7 +400,6 @@ int FunctionCalculator::readNum()
     *m_istr >> s;
     for (int i = 0; i < s.length(); i++)
         if (isdigit(s[i]) == false)
-            throw std::domain_error("invalid number\n");
+            throw std::domain_error("Enter a number\n");
     return std::stoi(s);
 }
-

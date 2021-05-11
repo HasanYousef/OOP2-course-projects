@@ -32,8 +32,9 @@ private:
 
     template <typename FuncType>
     void binaryFunc()
-    {
-        if (auto f0 = readFunctionIndex(), f1 = readFunctionIndex(); f0 && f1)
+    {   //add f = -1 when we get invalid input
+        if (auto f0 = readFunctionIndex(), f1 = readFunctionIndex();
+             f0 != -1 && f1 != -1 && f0 && f1) //added f!=1 to check valid input
         {
             m_functions.push_back(std::make_shared<FuncType>(m_functions[*f0], m_functions[*f1]));
         }
@@ -50,6 +51,7 @@ private:
         Comp,
         Log,
         Read,
+        Resize,
         Del,
         Help,
         Exit,
@@ -74,6 +76,7 @@ private:
     std::optional<int> readFunctionIndex() const;
     Action readAction() const;
     void runAction(Action action);
+    void resize();
 
     static ActionMap createActions();
     static FunctionList createFunctions();
