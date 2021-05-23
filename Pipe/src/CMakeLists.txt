@@ -1,10 +1,11 @@
 ﻿target_sources (Pipe PRIVATE "main.cpp" 
 "Game.cpp"
 "Level.cpp"
-"Pipes.cpp"
+"Pipe.cpp"
+"RotatablePipe.cpp"
 "TwoSidesPipe.cpp"
 "ThreeSidesPipe.cpp"
-"BowPipe.cpp"
+"CornerPipe.cpp"
 "Textures.cpp"
-"Receiver.cpp"
-"Pumper.cpp")
+"ReceiverPipe.cpp"
+"PumperPipe.cpp")

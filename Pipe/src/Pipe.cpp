@@ -10,22 +10,16 @@ void Pipe::draw(sf::RenderWindow& window) {
     window.draw(create());
 }
 
-//---------------------------------------------
-bool Pipe::handleClick(const sf::Vector2f& location) {
-    return create().getGlobalBounds().contains(location);
-}
-
-void Pipe::rotatePipe(Rotate rotate) {
-    if (rotate == Rotate::ToLeft) {
-        m_rotateDeg++;
-        if (m_rotateDeg > 4)
-            m_rotateDeg = 1;
+sf::Sprite Pipe::create(PipeType pipeType) const {
+    sf::Sprite result = sf::Sprite(*Textures::instance().
+        get_texture(pipeType, ifReceiveWater()));
+    result.setPosition(getPoint());
+    int rot = 1;
+    while (rot < getRotateDeg()) {
+        result.rotate(90.0f);
+        rot++;
     }
-    else {
-        m_rotateDeg--;
-        if (m_rotateDeg < 1)
-            m_rotateDeg = 4;
-    }
+    return result;
 }
 
 bool Pipe::canConnect(char way) const {

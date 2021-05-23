@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <filesystem>
+#include <SFML/Graphics.hpp>
+#include "Pipe.h"
 namespace fs = std::filesystem;
 
 class Level {
@@ -15,13 +17,13 @@ public:
 	void draw(sf::RenderWindow&);
 	int getWidth() const;
 	int getHeight() const;
-	Pipes *getPipe(int, int);
+	Pipe *getPipe(int, int);
 	bool solved();
 	
 private:
 	bool checkIfConnect(int, int);
 	//----------
-	std::vector<std::vector<Pipes*>> m_board;
+	std::vector<std::vector<Pipe*>> m_board;
 	int m_width, m_height;
 	sf::Vector2i m_pumperPoint;
 	std::vector<sf::Vector2i> m_receiversPoints;

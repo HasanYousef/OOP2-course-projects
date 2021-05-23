@@ -1,11 +1,9 @@
 #pragma once
 
-#include "Pipes.h"
+#include "RotatablePipe.h"
 
-class TwoSidesPipe : public Pipes {
+class TwoSidesPipe : public RotatablePipe {
 public:
-	TwoSidesPipe() : Pipes() {}
-	TwoSidesPipe(sf::Vector2f&);
 	sf::Sprite create() const;
 
 private:

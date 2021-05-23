@@ -15,14 +15,13 @@ public:
 			m_point(point), m_topReceived(top), m_buttomReceived(bottom),
 			m_leftReceived(left), m_rightReceived(right) {};
 	// get functions
+	sf::Sprite create(PipeType) const;
 	virtual sf::Sprite create() const;
 	int getRotateDeg() const;
 	sf::Vector2f getPoint() const;
 	bool ifReceiveWater() const;
 	//--------------------
 	virtual void draw(sf::RenderWindow&);
-	bool handleClick(const sf::Vector2f&);
-	void rotatePipe(Rotate);
 	bool canConnect(char) const;
 
 protected:
