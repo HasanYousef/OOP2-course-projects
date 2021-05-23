@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Pipes.h"
+#include "Pipe.h"
 
-class ThreeSidesPipe : public Pipes
+class ThreeSidesPipe : public Pipe
 {
 public:
-	ThreeSidesPipe() : Pipes() {}
+	ThreeSidesPipe() : Pipe() {}
 	ThreeSidesPipe(sf::Vector2f&);
 	sf::Sprite create() const;
 

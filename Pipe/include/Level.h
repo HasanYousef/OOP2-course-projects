@@ -3,11 +3,6 @@
 #include <fstream>
 #include <filesystem>
 namespace fs = std::filesystem;
-#include "BowPipe.h"
-#include "Pumper.h"
-#include "Receiver.h"
-#include "ThreeSidesPipe.h"
-#include "TwoSidesPipe.h"
 
 class Level {
 public:
@@ -26,8 +21,8 @@ public:
 private:
 	bool checkIfConnect(int, int);
 	//----------
-	std::vector<std::vector<Pipes*>> m_level;
-	int m_width, m_height,
-		m_pumperXindex, m_pumperYindex,
-		m_receiverXindex, m_receiverYindex;
+	std::vector<std::vector<Pipes*>> m_board;
+	int m_width, m_height;
+	sf::Vector2i m_pumperPoint;
+	std::vector<sf::Vector2i> m_receiversPoints;
 };

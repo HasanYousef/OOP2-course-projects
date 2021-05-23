@@ -3,7 +3,7 @@
 #include "Level.h"
 #include "ThreeSidesPipe.h"
 #include "TwoSidesPipe.h"
-#include "BowPipe.h"
+#include "CornerPipe.h"
 #include "macros.h"
 
 class game {
