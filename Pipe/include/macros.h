@@ -30,8 +30,8 @@ enum Rotate {
 
 //----------
 enum PipeType {
-	Pumper,
 	Receiver,
+	Pumper,
 	TwoSides,
 	Corner,
 	ThreeSides,
@@ -56,6 +56,8 @@ PipeType char_to_type(char ch) {
 		return PipeType::ThreeSides;
 	case '6':
 		return PipeType::FourSides;
+	default:
+		return PipeType::TwoSides;
 	}
 }
 

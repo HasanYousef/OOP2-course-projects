@@ -1,13 +1,13 @@
 #include "Game.h"
 
 //---------------------------------------------
-game::game() {
+Game::Game() {
 	m_window.create(sf::VideoMode(300, 300), "Pipe");
 	m_clicks = 0;
 }
 
 //-----------------start_game------------------
-void game::run() {
+void Game::run() {
 	int level = 1;
 	while (level <= NUMOFLEVELS) {
 		m_level.load_level(level);
@@ -17,7 +17,7 @@ void game::run() {
 }
 
 //---------------------------------------------
-bool game::run_level() {
+bool Game::run_level() {
 	sf::Event event;
 	sf::Vector2f mousepos;
 	while (m_window.isOpen()) {
@@ -64,7 +64,7 @@ bool game::run_level() {
 }
 
 //---------------------------------------------
-void game::pipeClick(sf::Vector2f points, Rotate way) {
+void Game::pipeClick(sf::Vector2f points, Rotate way) {
 	for (int row = 0; row < m_level.getHeight(); row++) {
 		for (int col = 0; col < m_level.getWidth(); col++) {
 			RotatablePipe* pipe = dynamic_cast<RotatablePipe*>(m_level.getPipe(row, col));

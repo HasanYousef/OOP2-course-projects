@@ -6,9 +6,9 @@
 #include "CornerPipe.h"
 #include "macros.h"
 
-class game {
+class Game {
 public:
-	game();
+	Game();
 	void run();
 
 private:
