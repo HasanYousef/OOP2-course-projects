@@ -42,7 +42,7 @@ enum PipeType {
 //we use this when we want to print the array
 //we chech the char in the array and return the 
 //type on ObjectType
-PipeType char_to_type(char ch) {
+static PipeType char_to_type(char ch) {
 	switch (ch) {
 	case '1':
 		return PipeType::Receiver;

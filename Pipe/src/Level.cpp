@@ -45,7 +45,7 @@ void Level::readFromStream(std::ifstream& stream) {
 	stream >> m_width;
 	//reading the map's chars line by line
 	m_board.resize(m_height);
-	for (int row = 0; row < m_height; row++) {
+	for (int row = 0; row < m_width; row++) {
 		//jumping over the new line char
 		stream.get();
 		for (int col = 0; col < m_width; col++) {
@@ -59,7 +59,7 @@ void Level::readFromStream(std::ifstream& stream) {
 				m_board[row].push_back(new PumperPipe(points,
 					int(stream.get() - '0')));
 				break;
-			case PipeType::TwoSides:	
+			default: //case PipeType::TwoSides:	
 				m_board[row].push_back(new TwoSidesPipe(points,
 					int(stream.get() - '0')));
 				break;

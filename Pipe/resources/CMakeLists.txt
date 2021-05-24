@@ -15,3 +15,5 @@ configure_file ("ThreeSidesOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("FourSidesOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("FourSidesOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
+
+configure_file ("Level1.txt" ${CMAKE_BINARY_DIR} COPYONLY)
