@@ -10,6 +10,7 @@ void Pipe::draw(sf::RenderWindow& window) {
     window.draw(create());
 }
 
+//---------------------------------------------
 sf::Sprite Pipe::create(PipeType pipeType) const {
     sf::Sprite result = sf::Sprite(*Textures::instance().
         get_texture(pipeType, ifReceiveWater()));
@@ -23,14 +24,12 @@ sf::Sprite Pipe::create(PipeType pipeType) const {
 }
 
 bool Pipe::canConnect(char way) const {
-    if (way == TOP)
-        return m_topReceived;
-    else if (way == BOTTOM)
-        return m_buttomReceived;
-    else if (way == RIGHT)
-        return m_rightReceived;
-    else if (way == LEFT)
-        return m_leftReceived;
+    return false;
+}
+
+//---------------------------------------------
+void Pipe::setWaterRec(bool ifGetWater) {
+    m_receiveWater = ifGetWater;
 }
 
 //---------------------------------------------
@@ -45,4 +44,5 @@ sf::Vector2f Pipe::getPoint() const {
 
 //---------------------------------------------
 bool Pipe::ifReceiveWater() const {
-    return m_topReceived || m_buttomReceived || m_leftReceived || m_rightReceived;
+    return m_receiveWater;
+}

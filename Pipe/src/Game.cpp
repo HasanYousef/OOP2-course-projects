@@ -40,14 +40,14 @@ bool game::run_level() {
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 					mousepos = m_window.mapPixelToCoords(
 						{ event.mouseButton.x, event.mouseButton.y });
-					pipeClick(mousepos, Left);
+					pipeClick(mousepos, Rotate::ToLeft);
 					while (!(sf::Event::MouseButtonReleased)) {}
 					m_clicks++;
 				}
 				else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
 					mousepos = m_window.mapPixelToCoords(
 						{ event.mouseButton.x, event.mouseButton.y });
-					pipeClick(mousepos, Right);
+					pipeClick(mousepos, Rotate::ToRight);
 					while (!(sf::Event::MouseButtonReleased)) {}
 					m_clicks++;
 				}
@@ -67,9 +67,14 @@ bool game::run_level() {
 void game::pipeClick(sf::Vector2f points, Rotate way) {
 	for (int row = 0; row < m_level.getHeight(); row++) {
 		for (int col = 0; col < m_level.getWidth(); col++) {
-			if (m_level.getPipe(row, col)->handleClick(points)) //if clicked it
-				m_level.getPipe(row, col)->rotatePipe(way); //rotate left or right
+			RotatablePipe* pipe = dynamic_cast<RotatablePipe*>(m_level.getPipe(row, col));
+			if (pipe == NULL) {
+				throw std::exception("error in line 73 in game class");
+			}
+			if (pipe->handleClick(points)) {
+				pipe->rotatePipe(way); //rotate left or right
 				return;
+			}
 		}
 	}
 }

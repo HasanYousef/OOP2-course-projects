@@ -8,12 +8,8 @@ class Pipe {
 public:
 	Pipe() {};
 	Pipe(sf::Vector2f& point) : m_point(point) {};
-	Pipe(bool top, bool bottom, bool left, bool right) :
-		m_topReceived(top), m_buttomReceived(bottom),
-		m_leftReceived(left), m_rightReceived(right) {};;
-	Pipe(sf::Vector2f& point, bool top, bool bottom, bool left, bool right) : 
-			m_point(point), m_topReceived(top), m_buttomReceived(bottom),
-			m_leftReceived(left), m_rightReceived(right) {};
+	Pipe(sf::Vector2f& point, int rotDeg) :
+		m_point(point), m_rotateDeg(rotDeg) {};
 	// get functions
 	sf::Sprite create(PipeType) const;
 	virtual sf::Sprite create() const;
@@ -22,14 +18,12 @@ public:
 	bool ifReceiveWater() const;
 	//--------------------
 	virtual void draw(sf::RenderWindow&);
-	bool canConnect(char) const;
+	virtual bool canConnect(char) const;
+	void setWaterRec(bool);
 
 protected:
 	sf::Vector2f m_point;
-	bool m_topReceived = false,
-		 m_buttomReceived = false,
-		 m_leftReceived = false,
-		 m_rightReceived = false;
+	bool m_receiveWater = false;
 	int m_rotateDeg = 1; 
 };
 

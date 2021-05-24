@@ -6,18 +6,17 @@ TEXTURE_SIZE = 64,
 WINDOW_WIDTH = 640,
 WINDOW_HEIGHT = 500,
 NUMOFLEVELS = 3,
-//NUM_OF_TYPES = 10;
+NUM_OF_TYPES = 6;
 
 //----------
 const char
-/*
-PUMPER = '1',
-RECEIVER = '2',
+RECEIVER = '1',
+PUMPER = '2',
 TWO_SIDES_PIPE = '3',
 CORNER_PIPE = '4',
 THREE_SIDES_PIPE = '5',
 FOUR_SIDES_PIPE = '6',
-*/
+
 LEFT = 'l',
 RIGHT = 'r',
 TOP = 't',
@@ -46,9 +45,9 @@ enum PipeType {
 PipeType char_to_type(char ch) {
 	switch (ch) {
 	case '1':
-		return PipeType::Pumper;
-	case '2':
 		return PipeType::Receiver;
+	case '2':
+		return PipeType::Pumper;
 	case '3': // (Two Sides Pipe)
 		return PipeType::TwoSides;
 	case '4':

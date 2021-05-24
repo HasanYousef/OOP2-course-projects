@@ -12,5 +12,6 @@ public:
 
 private:
 	Textures();
-	sf::Texture* m_textures[NUM_OF_TYPES];
+	sf::Texture* m_turnedOffPipesTextures[NUM_OF_TYPES],
+		* m_turnedOnPipesTextures[NUM_OF_TYPES];
 };
